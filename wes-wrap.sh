@@ -1,0 +1,34 @@
+#!/bin/sh
+print_usage() {
+    echo "\
+Usage: wes [OPTION]... -f [systeminfo]
+Search for possible Windows exploits given systeminfo.exe output
+
+Windows Exploit Suggester 0.98 ( https://github.com/bitsadmin/wesng/ )
+
+required arguments:
+  -f    File        Specify the systeminfo file
+
+optional arguments:
+  -i    Impact      Only display vulnerabilities with a given impact
+                    (Impacts: 'privilege', 'execution', 'denial', 'spoofing', 'disclosure', 'bypass')
+  -s    Severity    Only display vulnerabilities with a given severity
+                    (Severities: 'Moderate', 'Important', 'Critical')
+  -x    Exploits    Only display vulnerabilities with exploits if passed"
+}
+while getopts 'hxi:s:f:' flag; do
+    case "$flag" in
+        i) IMPACT="$OPTARG" ;;
+        s) SEVERITY="$OPTARG" ;;
+        f) FILE="$OPTARG";;
+        x) EXPLOIT="Exploit";;
+    esac
+done
+
+if [ -n "$FILE" ]; then
+    [ -n "$SEVERITY" ] && SEVERITY="$(tr '[:lower:]' '[:upper:]' <<< ${SEVERITY:0:1})${SEVERITY:1}"
+    [ -n "$IMPACT" ] && IMPACT="$(tr '[:lower:]' '[:upper:]' <<< ${IMPACT:0:1})${IMPACT:1}"
+    wesng `realpath $FILE` | awk -v RS='' -v ORS='\n\n' "/$SEVERITY/" | awk -v RS='' -v ORS='\n\n' "/$IMPACT/" | grep -vwE '(Date:|Exploit: n/a|KB:)' | awk -v RS='' -v ORS='\n\n' "/$EXPLOIT/"
+else
+    print_usage
+fi
