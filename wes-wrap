@@ -1,7 +1,7 @@
 #!/bin/sh
 print_usage() {
     echo "\
-Usage: wes [OPTION]... -f [systeminfo]
+Usage: wes-wrap [OPTION]... -f [systeminfo]
 Search for possible Windows exploits given systeminfo.exe output
 
 Windows Exploit Suggester 0.98 ( https://github.com/bitsadmin/wesng/ )
