@@ -1,5 +1,5 @@
 # wesng-wrapper
-A bash wrapper script for bitsadmin's ![wesng](https://github.com/bitsadmin/wesng).
+A bash wrapper script for bitsadmin's [wesng](https://github.com/bitsadmin/wesng).
 This wrapper script provides the ability to filter out vulnerabilities without any exploits and to be able to filter by both the impact and severity of the exploit simultaneously.
 
 ```
